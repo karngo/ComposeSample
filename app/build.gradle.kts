@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     id("kotlin-kapt")
     alias(libs.plugins.jetbrains.kotlin.serialization)
+    id("com.google.dagger.hilt.android")
 }
 
 android {
@@ -70,4 +71,11 @@ dependencies {
     // Compose Navigation
     implementation(libs.androidx.navigation)
     implementation(libs.jetbrains.kotlinx.serialization)
+
+    // Coil
+    implementation("io.coil-kt.coil3:coil-compose:3.1.0")
+    implementation("io.coil-kt.coil3:coil-network-okhttp:3.1.0")
+
+    // Hilt for compose navigation
+    implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
 }
