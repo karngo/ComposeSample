@@ -4,9 +4,16 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -20,29 +27,57 @@ import com.example.composesample.ui.theme.ComposeSampleTheme
 @Composable
 fun InsuranceDetails(id: String, viewmodel: InsuranceDetailsViewModel = hiltViewModel()) {
     val insuranceDetail = viewmodel.insuranceDetail.collectAsStateWithLifecycle()
+    var isDialogOpen by remember { mutableStateOf(false) }
 
     LaunchedEffect(true) {
         viewmodel.fetchInsurances(id)
     }
 
     insuranceDetail.value?.let {
-        InsuranceDetail(it)
+        InsuranceDetail(it) {
+            isDialogOpen = true
+        }
+    }
+
+    if (isDialogOpen) {
+        AlertDialog(
+            title = {
+                Text(text = "Purchase Successful!")
+            },
+            text = {
+                Text(text = "You have successfully purchased the insurance.")
+            },
+            onDismissRequest = {
+                isDialogOpen = false
+            },
+            confirmButton = {
+                TextButton(onClick = { isDialogOpen = false }) {
+                    Text("OK")
+                }
+            }
+        )
     }
 }
 
 @Composable
-fun InsuranceDetail(insurance: Insurance) {
-    Row(
-        modifier = Modifier.padding(8.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Column(modifier = Modifier.weight(1f)) {
-            Text(insurance.type)
-            Text(insurance.title)
-            Text(insurance.description)
-            Text(insurance.monthlyPremium.toString())
+fun InsuranceDetail(insurance: Insurance, onBuyClick: () -> Unit) {
+    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+        Row(
+            modifier = Modifier.padding(8.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Column(modifier = Modifier.weight(1f)) {
+                Text(insurance.type)
+                Text(insurance.title)
+                Text(insurance.description)
+                Text(insurance.monthlyPremium.toString())
+            }
+            AsyncImage(model = insurance.imageUrl, contentDescription = "Insurance Image")
         }
-        AsyncImage(model = insurance.imageUrl, contentDescription = "Insurance Image")
+
+        Button(onClick = onBuyClick) {
+            Text("Buy Now")
+        }
     }
 }
 
@@ -66,7 +101,7 @@ fun InsuranceDetailPreview() {
                     tenure = "1 Year",
                     id = "1"
                 )
-            )
+            ) {}
         }
     }
 }
