@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name" translatable="false">ComposeSample</string>
+    <string name="app_name" translatable="false">InsureMe</string>
 
     <string name="purchase_successful">Purchase Successful!</string>
     <string name="you_have_successfully_purchased_the_insurance">You have successfully purchased the insurance.</string>
