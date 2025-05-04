@@ -6,6 +6,7 @@ import com.example.composesample.analytics.AppAnalytics
 import com.example.composesample.analytics.AppEvent
 import com.example.composesample.data.InsuranceRepository
 import com.example.composesample.data.model.Insurance
+import com.example.composesample.model.UIState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -20,12 +21,15 @@ class InsuranceDetailsViewModel @Inject constructor(private val insuranceReposit
     @Inject
     lateinit var appAnalytics: AppAnalytics
 
-    private val _insuranceDetail = MutableStateFlow<Insurance?>(null)
-    val insuranceDetail: StateFlow<Insurance?> = _insuranceDetail
+    private val _insuranceDetail = MutableStateFlow<UIState<Insurance?>>(UIState.Valid(null))
+    val insuranceDetail: StateFlow<UIState<Insurance?>> = _insuranceDetail
 
     fun fetchInsurances(id: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            _insuranceDetail.value = insuranceRepository.getInsuranceDetails(id)
+            _insuranceDetail.value = UIState.Loading
+            _insuranceDetail.value = insuranceRepository.getInsuranceDetails(id).let {
+                UIState.Valid(it)
+            }
         }
     }
 

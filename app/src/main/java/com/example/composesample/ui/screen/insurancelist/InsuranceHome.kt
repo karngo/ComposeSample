@@ -21,6 +21,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
 import com.example.composesample.analytics.AppEvent
 import com.example.composesample.data.model.Insurance
+import com.example.composesample.model.UIState
 import com.example.composesample.ui.theme.ComposeSampleTheme
 
 @Composable
@@ -36,7 +37,15 @@ fun InsuranceHome(
     }
 
     Surface(modifier = Modifier.padding(12.dp)) {
-        InsuranceList(insuranceList.value, onShowDetail)
+        when (val state = insuranceList.value) {
+            is UIState.Valid -> {
+                InsuranceList(state.data, onShowDetail)
+            }
+
+            is UIState.Loading -> {
+                Text("Loading...")
+            }
+        }
     }
 }
 

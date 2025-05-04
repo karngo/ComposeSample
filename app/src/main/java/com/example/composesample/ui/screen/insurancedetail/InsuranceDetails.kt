@@ -25,6 +25,7 @@ import coil3.compose.AsyncImage
 import com.example.composesample.R
 import com.example.composesample.analytics.AppEvent
 import com.example.composesample.data.model.Insurance
+import com.example.composesample.model.UIState
 import com.example.composesample.ui.theme.ComposeSampleTheme
 
 @Composable
@@ -41,14 +42,22 @@ fun InsuranceDetails(id: String, viewmodel: InsuranceDetailsViewModel = hiltView
         viewmodel.fetchInsurances(id)
     }
 
-    insuranceDetail.value?.let {
-        InsuranceDetail(it) {
-            viewmodel.logEvent(
-                AppEvent("buy_now_clicked").apply {
-                    properties["insurance_code"] = it.id
+    when (val state = insuranceDetail.value) {
+        is UIState.Valid -> {
+            state.data?.let {
+                InsuranceDetail(it) {
+                    viewmodel.logEvent(
+                        AppEvent("buy_now_clicked").apply {
+                            properties["insurance_code"] = it.id
+                        }
+                    )
+                    isDialogOpen = true
                 }
-            )
-            isDialogOpen = true
+            }
+        }
+
+        is UIState.Loading -> {
+            Text("Loading...")
         }
     }
 
