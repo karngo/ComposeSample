@@ -81,4 +81,7 @@ dependencies {
 
     // AppCompact for locale handling
     implementation("androidx.appcompat:appcompat:1.7.0")
+
+    // WorkManager
+    implementation("androidx.work:work-runtime-ktx:2.10.0")
 }
