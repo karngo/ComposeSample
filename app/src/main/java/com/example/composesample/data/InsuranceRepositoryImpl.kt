@@ -9,7 +9,7 @@ class InsuranceRepositoryImpl @Inject constructor(private val apiService: ApiSer
         return apiService.fetchInsurances().body() ?: emptyList()
     }
 
-    override suspend fun getInsuranceDetails(id: String): Insurance {
-        TODO("Not yet implemented")
+    override suspend fun getInsuranceDetails(id: String): Insurance? {
+        return apiService.fetchInsuranceDetails(id).body()
     }
 }
