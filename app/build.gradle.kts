@@ -78,4 +78,7 @@ dependencies {
 
     // Hilt for compose navigation
     implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
+
+    // AppCompact for locale handling
+    implementation("androidx.appcompat:appcompat:1.7.0")
 }
