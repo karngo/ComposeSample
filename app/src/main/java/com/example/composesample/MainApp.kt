@@ -12,7 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.compose.rememberNavController
 import com.example.composesample.model.AppLanguage
-import com.example.composesample.ui.LanguageDropdown
+import com.example.composesample.ui.component.LanguageDropdown
 import com.example.composesample.ui.navigation.AppNavGraph
 import com.example.composesample.ui.theme.ComposeSampleTheme
 
