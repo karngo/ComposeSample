@@ -16,11 +16,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
+import com.example.composesample.R
 import com.example.composesample.data.model.Insurance
 import com.example.composesample.ui.theme.ComposeSampleTheme
 
@@ -42,17 +44,17 @@ fun InsuranceDetails(id: String, viewmodel: InsuranceDetailsViewModel = hiltView
     if (isDialogOpen) {
         AlertDialog(
             title = {
-                Text(text = "Purchase Successful!")
+                Text(text = stringResource(R.string.purchase_successful))
             },
             text = {
-                Text(text = "You have successfully purchased the insurance.")
+                Text(text = stringResource(R.string.you_have_successfully_purchased_the_insurance))
             },
             onDismissRequest = {
                 isDialogOpen = false
             },
             confirmButton = {
                 TextButton(onClick = { isDialogOpen = false }) {
-                    Text("OK")
+                    Text(stringResource(R.string.ok))
                 }
             }
         )
@@ -76,7 +78,7 @@ fun InsuranceDetail(insurance: Insurance, onBuyClick: () -> Unit) {
         }
 
         Button(onClick = onBuyClick) {
-            Text("Buy Now")
+            Text(stringResource(R.string.buy_now))
         }
     }
 }
