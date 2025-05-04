@@ -1,5 +1,7 @@
 package com.example.composesample.di
 
+import com.example.composesample.analytics.AppAnalytics
+import com.example.composesample.analytics.LocalAnalytics
 import com.example.composesample.data.ApiService
 import com.example.composesample.data.InsuranceRepository
 import com.example.composesample.data.InsuranceRepositoryImpl
@@ -27,5 +29,11 @@ object AppModule {
     @Provides
     fun provideInsuranceRepository(apiService: ApiService): InsuranceRepository {
         return InsuranceRepositoryImpl(apiService)
+    }
+
+    @Singleton
+    @Provides
+    fun provideAppAnalytics(): AppAnalytics {
+        return LocalAnalytics()
     }
 }

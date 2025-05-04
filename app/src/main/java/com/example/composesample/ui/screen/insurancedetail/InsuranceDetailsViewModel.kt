@@ -2,6 +2,8 @@ package com.example.composesample.ui.screen.insurancedetail
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.composesample.analytics.AppAnalytics
+import com.example.composesample.analytics.AppEvent
 import com.example.composesample.data.InsuranceRepository
 import com.example.composesample.data.model.Insurance
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -15,6 +17,9 @@ import javax.inject.Inject
 class InsuranceDetailsViewModel @Inject constructor(private val insuranceRepository: InsuranceRepository) :
     ViewModel() {
 
+    @Inject
+    lateinit var appAnalytics: AppAnalytics
+
     private val _insuranceDetail = MutableStateFlow<Insurance?>(null)
     val insuranceDetail: StateFlow<Insurance?> = _insuranceDetail
 
@@ -22,5 +27,9 @@ class InsuranceDetailsViewModel @Inject constructor(private val insuranceReposit
         viewModelScope.launch(Dispatchers.IO) {
             _insuranceDetail.value = insuranceRepository.getInsuranceDetails(id)
         }
+    }
+
+    fun logEvent(event: AppEvent) {
+        appAnalytics.logEvent(event)
     }
 }

@@ -23,6 +23,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
 import com.example.composesample.R
+import com.example.composesample.analytics.AppEvent
 import com.example.composesample.data.model.Insurance
 import com.example.composesample.ui.theme.ComposeSampleTheme
 
@@ -32,11 +33,21 @@ fun InsuranceDetails(id: String, viewmodel: InsuranceDetailsViewModel = hiltView
     var isDialogOpen by remember { mutableStateOf(false) }
 
     LaunchedEffect(true) {
+        viewmodel.logEvent(
+            AppEvent("InsuranceDetailViewed").apply {
+                properties["insurance_code"] = id
+            }
+        )
         viewmodel.fetchInsurances(id)
     }
 
     insuranceDetail.value?.let {
         InsuranceDetail(it) {
+            viewmodel.logEvent(
+                AppEvent("buy_now_clicked").apply {
+                    properties["insurance_code"] = it.id
+                }
+            )
             isDialogOpen = true
         }
     }
