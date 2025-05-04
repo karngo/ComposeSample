@@ -24,7 +24,8 @@ import com.example.composesample.ui.theme.ComposeSampleTheme
 
 @Composable
 fun InsuranceHome(
-    viewmodel: InsuranceHomeViewModel = hiltViewModel()
+    viewmodel: InsuranceHomeViewModel = hiltViewModel(),
+    onShowDetail: (insuranceId: String) -> Unit
 ) {
     val insuranceList = viewmodel.insurances.collectAsStateWithLifecycle()
 
@@ -33,15 +34,15 @@ fun InsuranceHome(
     }
 
     Surface(modifier = Modifier.padding(12.dp)) {
-        InsuranceList(insuranceList.value)
+        InsuranceList(insuranceList.value, onShowDetail)
     }
 }
 
 @Composable
-fun InsuranceList(insurances: List<Insurance>) {
+fun InsuranceList(insurances: List<Insurance>, onItemClick: (id: String) -> Unit) {
     LazyColumn(verticalArrangement = Arrangement.spacedBy(8.dp)) {
         items(insurances) { insurance ->
-            Card(modifier = Modifier.fillMaxWidth()) {
+            Card(modifier = Modifier.fillMaxWidth(), onClick = { onItemClick(insurance.id) }) {
                 Row(
                     modifier = Modifier.padding(8.dp),
                     verticalAlignment = Alignment.CenterVertically
@@ -92,7 +93,7 @@ fun InsuranceListPreview() {
                         id = "2"
                     )
                 )
-            )
+            ) {}
         }
     }
 }
